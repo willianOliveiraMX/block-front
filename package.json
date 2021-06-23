@@ -19,7 +19,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "prepush": "jshint index.js",
+    "prepush": "jshint ./src",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
