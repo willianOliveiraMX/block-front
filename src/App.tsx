@@ -1,8 +1,7 @@
 import React from 'react';
 
 const  App = () =>{
-  
-  console.log('oi mundo!');
+  console.log('batata');
   return (
     <div>
       block front aqui
