@@ -13,7 +13,8 @@ const App = (): JSX.Element => {
       </div>
       <div>Content here </div>
       <div>
-        <BasicInput label="E-mail" />
+        <BasicInput label="E-mail" type="text" />
+        <BasicInput label="Password" type="password" />
       </div>
     </>
   );

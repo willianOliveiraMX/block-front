@@ -17,14 +17,17 @@ const BasicInputWrapper = styled.div`
     0% {
       -webkit-box-shadow: 0px -9px 29px 3px #e052b0;
       box-shadow: 0px -9px 29px 3px #e052b0;
+      height: 1px;
     }
     50% {
       -webkit-box-shadow: 0px -9px 29px 2px #e052b0;
       box-shadow: 0px -9px 29px 2px #e052b0;
+      height: 15px;
     }
     100% {
       -webkit-box-shadow: 0px -9px 29px 0px #e052b0;
       box-shadow: 0px -9px 29px 0px #e052b0;
+      height: 1px;
     }
   }
 
@@ -37,7 +40,7 @@ const BasicInputWrapper = styled.div`
     -webkit-box-shadow: 0px -9px 29px 1px #e052b0;
     box-shadow: 0px -9px 29px 1px #e052b0;
     bottom: -1px;
-    transition: all 300ms ease-in-out;
+    transition: all 400ms ease-in-out;
     animation-fill-mode: forwards;
 
     ${({ basicInputOnFocus }) =>

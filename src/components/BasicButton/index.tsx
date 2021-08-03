@@ -38,8 +38,11 @@ const BasicButton = ({
       setOpenState(false);
       const cleanEffect2 = () => {
         waveRef?.current?.removeEventListener("transitionend", cleanEffect2);
-        setScale(0);
+        // setScale(0);
         callBack(event);
+        setTimeout(() => {
+          setScale(0);
+        }, 450);
       };
       waveRef?.current?.addEventListener("transitionend", cleanEffect2);
     };
