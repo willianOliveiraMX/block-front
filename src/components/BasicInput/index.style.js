@@ -10,9 +10,6 @@ const BasicInputWrapper = styled.div`
   color: rgba(224, 82, 176, 0.5);
   border-bottom: 1px solid #e052b0;
 
-  margin-left: 100px;
-  width: 500px;
-
   @keyframes aureaLine {
     0% {
       -webkit-box-shadow: 0px -9px 29px 3px #e052b0;
