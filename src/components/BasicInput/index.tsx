@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import BasicInputWrapper, { ErrorMessageWrapper } from "./index.style";
 import { FormContainerContext } from "../FormContainer";
 import emailValidation, {
@@ -21,6 +21,43 @@ const BasicInput = ({
   const [errorMessage, setErrorMessage] = useState("");
   const value = useContext(FormContainerContext);
 
+  const validateFields = () => {
+    const { inputs = [] } = value;
+
+    if (description === "email") {
+      const isValid = emailValidation(inputInternalValue);
+      inputs.map((input) => {
+        if (input.description === description) {
+          // eslint-disable-next-line no-param-reassign
+          input.isOnError = !isValid;
+          // eslint-disable-next-line no-param-reassign
+          input.value = inputInternalValue;
+          setErrorMessage(isValid ? "" : input.errorMessage);
+        }
+        return input;
+      });
+    }
+
+    if (description === "password") {
+      const isValid = passwordValidation(inputInternalValue);
+      inputs.map((input) => {
+        if (input.description === description) {
+          // eslint-disable-next-line no-param-reassign
+          input.isOnError = !isValid;
+          // eslint-disable-next-line no-param-reassign
+          input.value = inputInternalValue;
+          setErrorMessage(isValid ? "" : input.errorMessage);
+        }
+        return input;
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (!inputInternalValue.length) return;
+    validateFields();
+  });
+
   const handleOnFocus = () => {
     setInputFocus(true);
   };
@@ -30,7 +67,7 @@ const BasicInput = ({
       setInputFocus(false);
     }
 
-    const { inputs = [], updateInputs = (newInput: any) => {} } = value;
+    const { inputs = [] } = value;
     if (!inputs.length) return;
 
     const currentInput = inputs.find(
@@ -43,31 +80,7 @@ const BasicInput = ({
       );
     }
 
-    if (description === "email") {
-      const isValid = emailValidation(inputInternalValue);
-      const newCurrentInputs = inputs.map((input) => {
-        if (input.description === description) {
-          // eslint-disable-next-line no-param-reassign
-          input.isOnError = isValid;
-          setErrorMessage(isValid ? "" : input.errorMessage);
-        }
-        return input;
-      });
-      updateInputs(newCurrentInputs);
-    }
-
-    if (description === "password") {
-      const isValid = passwordValidation(inputInternalValue);
-      const newCurrentInputs = inputs.map((input) => {
-        if (input.description === description) {
-          // eslint-disable-next-line no-param-reassign
-          input.isOnError = isValid;
-          setErrorMessage(isValid ? "" : input.errorMessage);
-        }
-        return input;
-      });
-      updateInputs(newCurrentInputs);
-    }
+    validateFields();
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -37,11 +37,10 @@ const LoginForm = (): JSX.Element => {
           <BasicInput label="E-mail" type="text" description="email" />
           <BasicInput label="Password" type="password" description="password" />
           <GridWrapper flex justifyContentEnd>
-            <BasicButton callBack={handleLogin} description="Login" />
+            <BasicButton handleForm={handleLogin} description="Login" />
           </GridWrapper>
         </FormContainer>
         <Divider description="or" />
-        <div>Google here</div>
       </LoginFormContainer>
     </LoginFormWrapper>
   );

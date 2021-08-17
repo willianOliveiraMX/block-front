@@ -1,9 +1,11 @@
-import React, { useState, useRef } from "react";
+/* eslint-disable no-param-reassign */
+import React, { useState, useRef, useContext } from "react";
 import { StyledButton, Wave } from "./index.style";
+import { FormContainerContext } from "../FormContainer";
 
 interface BasicButtonInterface {
   description: string;
-  callBack: (event: React.MouseEvent<HTMLElement>) => void;
+  handleForm: (event: React.MouseEvent<HTMLElement>) => void;
   secondary?: boolean;
 }
 
@@ -13,7 +15,7 @@ const defaultProps = {
 
 const BasicButton = ({
   description,
-  callBack,
+  handleForm,
   secondary,
 }: BasicButtonInterface): JSX.Element => {
   const [openWave, setOpenState] = useState(false);
@@ -23,9 +25,18 @@ const BasicButton = ({
 
   const buttonRef = useRef<HTMLInputElement>(null);
   const waveRef = useRef<HTMLInputElement>(null);
+  const value = useContext(FormContainerContext);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     const buttonPosition = buttonRef?.current?.getBoundingClientRect();
+
+    const {
+      inputs = [],
+      updateInputs = (newInput: unknown) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        newInput;
+      },
+    } = value;
 
     setAxleY(Math.abs((buttonPosition?.top || 0) - event.clientY));
     setAxleX(Math.abs((buttonPosition?.left || 0) - event.clientX));
@@ -38,7 +49,16 @@ const BasicButton = ({
       setOpenState(false);
       const cleanEffect2 = () => {
         waveRef?.current?.removeEventListener("transitionend", cleanEffect2);
-        callBack(event);
+
+        const everyInputIsValid = inputs.every(
+          (input) => input.isOnError === false && input.value.length
+        );
+
+        if (everyInputIsValid) {
+          handleForm(event);
+        } else {
+          updateInputs([...inputs]);
+        }
         setTimeout(() => {
           setScale(0);
         }, 450);

@@ -11,7 +11,11 @@ import {
   LoginMenuWrapper,
 } from "./index.style";
 
-const Header = (): JSX.Element => {
+interface HeaderInterface {
+  isLoginPage: boolean;
+}
+
+const Header = ({ isLoginPage }: HeaderInterface): JSX.Element => {
   const [selectedItem, setSelectedItem] = useState("domain");
   const [openProfileMenu, setOpenProfileMenu] = useState(false);
 
@@ -29,31 +33,55 @@ const Header = (): JSX.Element => {
         <LogoImage src={LogoIcon} alt="logo" />
       </div>
       <MenuWrapper>
-        <MenuItem
-          backGroundColor={selectedItem === "domain"}
-          onClick={() => {
-            handleSelectedItem("domain");
-          }}
-        >
-          Dominios
-        </MenuItem>
-        <MenuItem
-          backGroundColor={selectedItem === "resources"}
-          onClick={() => {
-            handleSelectedItem("resources");
-          }}
-        >
-          Recursos
-        </MenuItem>
+        {!isLoginPage && (
+          <>
+            <MenuItem
+              backGroundColor={selectedItem === "domain"}
+              onClick={() => {
+                handleSelectedItem("domain");
+              }}
+            >
+              Dominios
+            </MenuItem>
+            <MenuItem
+              backGroundColor={selectedItem === "resources"}
+              onClick={() => {
+                handleSelectedItem("resources");
+              }}
+            >
+              Recursos
+            </MenuItem>
 
-        <LoginMenuWrapper>
-          <LoginIconStyled
-            src={LoginIcon}
-            alt="login"
-            onClick={handleOpenProfileMenu}
-          />
-          {openProfileMenu && <ProfileMenu />}
-        </LoginMenuWrapper>
+            <LoginMenuWrapper>
+              <LoginIconStyled
+                src={LoginIcon}
+                alt="login"
+                onClick={handleOpenProfileMenu}
+              />
+              {openProfileMenu && <ProfileMenu />}
+            </LoginMenuWrapper>
+          </>
+        )}
+        {isLoginPage && (
+          <>
+            <MenuItem
+              backGroundColor={selectedItem === "cadatrar"}
+              onClick={() => {
+                handleSelectedItem("cadatrar");
+              }}
+            >
+              Cadatrar
+            </MenuItem>
+            <MenuItem
+              backGroundColor={selectedItem === "login"}
+              onClick={() => {
+                handleSelectedItem("login");
+              }}
+            >
+              Login
+            </MenuItem>
+          </>
+        )}
       </MenuWrapper>
     </HeaderStyled>
   );
