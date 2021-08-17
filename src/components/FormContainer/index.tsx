@@ -1,14 +1,42 @@
 import React from "react";
 
-type Props = {
-  children: React.ReactChild | React.ReactChild[];
+const defaultValue = {
+  inputs: [
+    {
+      description: "",
+      value: "",
+      isOnError: false,
+      errorMessage: "",
+    },
+  ],
+  updateInputs: (): any => {},
 };
 
-const FormContainerContext = React.createContext("batata");
+type Props = {
+  children: React.ReactChild | React.ReactChild[];
+  loginRules: {
+    description: string;
+    value: string;
+    isOnError: boolean;
+    errorMessage: string;
+  }[];
+  setLoginRules: any;
+};
 
-export const FormContainer = ({ children }: Props): JSX.Element => {
+export const FormContainerContext = React.createContext(defaultValue);
+
+export const FormContainer = ({
+  children,
+  loginRules,
+  setLoginRules,
+}: Props): JSX.Element => {
   return (
-    <FormContainerContext.Provider value="chips">
+    <FormContainerContext.Provider
+      value={{
+        inputs: loginRules,
+        updateInputs: setLoginRules,
+      }}
+    >
       <form autoComplete="off">{children}</form>
     </FormContainerContext.Provider>
   );

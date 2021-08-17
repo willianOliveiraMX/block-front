@@ -73,4 +73,11 @@ const BasicInputWrapper = styled.div`
   }
 `;
 
+export const ErrorMessageWrapper = styled.span`
+  position: absolute;
+  right: 0;
+  top: 57px;
+  font-size: 12px;
+`;
+
 export default BasicInputWrapper;
