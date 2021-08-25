@@ -11,7 +11,7 @@ const Routes = (): JSX.Element => {
         <Route path="/login">
           <Login />
         </Route>
-        <PrivateRoute component={<Domains />} path="/" />
+        <PrivateRoute component={() => <Domains />} path="/" />
       </Switch>
     </Router>
   );

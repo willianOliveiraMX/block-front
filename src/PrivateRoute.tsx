@@ -3,16 +3,15 @@ import { Route, Redirect } from "react-router-dom";
 import isLogin from "./services/isLogin";
 
 type Props = {
-  component: React.ReactNode;
+  component: React.ComponentType;
   path: string;
 };
 
-const PrivateRoute = ({ component, path }: Props): JSX.Element => {
+const PrivateRoute = ({ component: Component, path }: Props): JSX.Element => {
   return (
-    <Route
-      render={() => (isLogin() ? { component } : <Redirect to="/login" />)}
-      path={path}
-    />
+    <Route path={path}>
+      {isLogin() ? <Component /> : <Redirect to="/login" />}
+    </Route>
   );
 };
 
