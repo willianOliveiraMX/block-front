@@ -10,10 +10,12 @@
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "axios": "^0.21.1",
     "husky": "^6.0.0",
     "lint-staged": "^11.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-query": "^3.21.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "styled-components": "^5.3.0",
@@ -31,6 +33,7 @@
       "cross-env CI=true yarn test --bail --findRelatedTests"
     ]
   },
+  "proxy": "http://localhost:5000",
   "scripts": {
     "format": "prettier --write src/**/*.ts{,x}",
     "lint": "tsc --noEmit && eslint src/**/*.ts{,x}",

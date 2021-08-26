@@ -11,6 +11,16 @@ const Grid = styled.div`
     css`
       justify-content: flex-end;
     `};
+  ${({ justifyContentCenter }) =>
+    justifyContentCenter &&
+    css`
+      justify-content: center;
+    `};
+  ${({ marginTop }) =>
+    marginTop?.length &&
+    css`
+      margin-top: ${marginTop};
+    `};
 `;
 
 export default Grid;

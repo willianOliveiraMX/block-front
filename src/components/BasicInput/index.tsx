@@ -3,6 +3,7 @@ import BasicInputWrapper, { ErrorMessageWrapper } from "./index.style";
 import { FormContainerContext } from "../FormContainer";
 import emailValidation, {
   passwordValidation,
+  validURL,
 } from "../../services/formValidation";
 
 interface BasicInputInterface {
@@ -40,6 +41,34 @@ const BasicInput = ({
 
     if (description === "password") {
       const isValid = passwordValidation(inputInternalValue);
+      inputs.map((input) => {
+        if (input.description === description) {
+          // eslint-disable-next-line no-param-reassign
+          input.isOnError = !isValid;
+          // eslint-disable-next-line no-param-reassign
+          input.value = inputInternalValue;
+          setErrorMessage(isValid ? "" : input.errorMessage);
+        }
+        return input;
+      });
+    }
+
+    if (description === "text") {
+      const isValid = inputInternalValue.length < 40;
+      inputs.map((input) => {
+        if (input.description === description) {
+          // eslint-disable-next-line no-param-reassign
+          input.isOnError = !isValid;
+          // eslint-disable-next-line no-param-reassign
+          input.value = inputInternalValue;
+          setErrorMessage(isValid ? "" : input.errorMessage);
+        }
+        return input;
+      });
+    }
+
+    if (description === "urlSite") {
+      const isValid = validURL(inputInternalValue);
       inputs.map((input) => {
         if (input.description === description) {
           // eslint-disable-next-line no-param-reassign
