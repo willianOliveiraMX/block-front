@@ -24,7 +24,7 @@ const FormAddDomain = (): JSX.Element => {
     },
   ]);
 
-  const createDomain = useMutation((newDomain: any) =>
+  const createDomain = useMutation((newDomain: unknown) =>
     axios.post("/domains", newDomain)
   );
 
