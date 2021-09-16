@@ -7,16 +7,19 @@ interface BasicButtonInterface {
   description: string;
   handleForm: (event: React.MouseEvent<HTMLElement>) => void;
   secondary?: boolean;
+  validInputOff?: boolean;
 }
 
 const defaultProps = {
   secondary: false,
+  validInputOff: false,
 };
 
 const BasicButton = ({
   description,
   handleForm,
   secondary,
+  validInputOff,
 }: BasicButtonInterface): JSX.Element => {
   const [openWave, setOpenState] = useState(false);
   const [axleY, setAxleY] = useState(0);
@@ -54,7 +57,7 @@ const BasicButton = ({
           (input) => input.isOnError === false && input.value.length
         );
 
-        if (everyInputIsValid) {
+        if (everyInputIsValid || validInputOff) {
           handleForm(event);
         } else {
           updateInputs([...inputs]);

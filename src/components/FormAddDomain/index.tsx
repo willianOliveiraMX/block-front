@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import axios from "axios";
 import BasicButton from "../BasicButton";
 import GridWrapper from "../BasicGrid";
@@ -8,7 +8,20 @@ import { FormContainer } from "../FormContainer";
 import FormDomainContainer from "./index.style";
 import PlusIcon from "../../icons/plusicon.svg";
 
-const FormAddDomain = (): JSX.Element => {
+interface FormDomain {
+  onModal?: boolean;
+  externalAction?: () => void;
+}
+
+const defaultProps = {
+  onModal: false,
+  externalAction: () => {},
+};
+
+const FormAddDomain = ({
+  onModal,
+  externalAction,
+}: FormDomain): JSX.Element => {
   const [loginFormRules, setLoginFormRules] = useState([
     {
       description: "text",
@@ -24,9 +37,23 @@ const FormAddDomain = (): JSX.Element => {
     },
   ]);
 
-  const createDomain = useMutation((newDomain: unknown) =>
-    axios.post("/domains", newDomain)
-  );
+  const handleExternalAction = () => {
+    if (externalAction) {
+      externalAction();
+    }
+  };
+  const queryClient = useQueryClient();
+
+  const createDomain = useMutation(async (newDomain: unknown) => {
+    const response = axios.post("/domains", newDomain);
+    handleExternalAction();
+
+    const { data = {} } = await response;
+    queryClient.setQueryData("domainList", (old: any) => {
+      return [...old, data];
+    });
+    return response;
+  });
 
   const handleSubmitForm = () => {
     const [domainNameValue, urlSiteValues] = loginFormRules;
@@ -46,10 +73,12 @@ const FormAddDomain = (): JSX.Element => {
 
   return (
     <div>
-      <GridWrapper flex justifyContentCenter>
-        <img src={PlusIcon} alt="add domain" width="30px" />
-      </GridWrapper>
-      <FormDomainContainer>
+      {!onModal && (
+        <GridWrapper flex justifyContentCenter>
+          <img src={PlusIcon} alt="add domain" width="30px" />
+        </GridWrapper>
+      )}
+      <FormDomainContainer boxShadow={onModal}>
         <FormContainer
           loginRules={loginFormRules}
           setLoginRules={setLoginFormRules}
@@ -57,15 +86,32 @@ const FormAddDomain = (): JSX.Element => {
           <BasicInput label="Nome do domínio" type="text" description="text" />
           <BasicInput label="URL do site" type="text" description="urlSite" />
           <GridWrapper flex justifyContentEnd marginTop="15px">
-            <BasicButton
-              handleForm={handleSubmitForm}
-              description="Adicionar"
-            />
+            {onModal ? (
+              <>
+                <BasicButton
+                  handleForm={handleExternalAction}
+                  description="Cancelar"
+                  secondary
+                  validInputOff
+                />
+                <BasicButton
+                  handleForm={handleSubmitForm}
+                  description="Salvar"
+                />
+              </>
+            ) : (
+              <BasicButton
+                handleForm={handleSubmitForm}
+                description="Adicionar"
+              />
+            )}
           </GridWrapper>
         </FormContainer>
       </FormDomainContainer>
     </div>
   );
 };
+
+FormAddDomain.defaultProps = defaultProps;
 
 export default FormAddDomain;
