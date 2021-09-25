@@ -21,6 +21,11 @@ const Grid = styled.div`
     css`
       margin-top: ${marginTop};
     `};
+  ${({ margin }) =>
+    margin?.length &&
+    css`
+      margin: ${margin};
+    `};
 `;
 
 export default Grid;

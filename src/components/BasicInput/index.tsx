@@ -25,6 +25,23 @@ const BasicInput = ({
   const validateFields = () => {
     const { inputs = [] } = value;
 
+    if (description === "custom") {
+      inputs.forEach((input) => {
+        const { validateFunction = () => {} } = input;
+
+        const isValid = validateFunction(inputInternalValue);
+        console.log("is valid here::::", isValid);
+        if (input.description === description) {
+          // eslint-disable-next-line no-param-reassign
+          input.isOnError = !isValid;
+          // eslint-disable-next-line no-param-reassign
+          input.value = inputInternalValue;
+          // setErrorMessage(isValid ? "" : input.errorMessage);
+        }
+        return input;
+      });
+    }
+
     if (description === "email") {
       const isValid = emailValidation(inputInternalValue);
       inputs.map((input) => {
@@ -83,7 +100,7 @@ const BasicInput = ({
   };
 
   useEffect(() => {
-    if (!inputInternalValue.length) return;
+    // if (!inputInternalValue.length) return;
     validateFields();
   });
 
@@ -128,7 +145,7 @@ const BasicInput = ({
         type={type}
       />
       <label htmlFor="inputId">{label}</label>
-      <ErrorMessageWrapper>{errorMessage}</ErrorMessageWrapper>
+      {/* <ErrorMessageWrapper>{errorMessage}</ErrorMessageWrapper> */}
     </BasicInputWrapper>
   );
 };

@@ -13,6 +13,7 @@ const LoginForm = (): JSX.Element => {
       value: "",
       isOnError: false,
       errorMessage: "Por favor, insira um email válido!",
+      validateFunction: (p: string) => false,
     },
     {
       description: "password",
@@ -20,6 +21,7 @@ const LoginForm = (): JSX.Element => {
       isOnError: false,
       errorMessage:
         "A senha precisa ter no mínimo 8 caracteres. Uma letra maíscula e um número",
+      validateFunction: (p: string) => false,
     },
   ]);
 

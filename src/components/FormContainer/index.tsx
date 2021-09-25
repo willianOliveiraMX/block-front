@@ -1,17 +1,5 @@
 import React from "react";
 
-const defaultValue = {
-  inputs: [
-    {
-      description: "",
-      value: "",
-      isOnError: false,
-      errorMessage: "",
-    },
-  ],
-  updateInputs: (): any => {},
-};
-
 type Props = {
   children: React.ReactChild | React.ReactChild[];
   loginRules: {
@@ -19,8 +7,22 @@ type Props = {
     value: string;
     isOnError: boolean;
     errorMessage: string;
+    validateFunction(p: string): boolean;
   }[];
   setLoginRules: any;
+};
+
+const defaultValue = {
+  inputs: [
+    {
+      description: "",
+      value: "",
+      isOnError: false,
+      errorMessage: "",
+      validateFunction: (p: string) => false,
+    },
+  ],
+  updateInputs: (): any => {},
 };
 
 export const FormContainerContext = React.createContext(defaultValue);

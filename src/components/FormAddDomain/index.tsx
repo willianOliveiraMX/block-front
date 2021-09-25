@@ -28,12 +28,14 @@ const FormAddDomain = ({
       value: "",
       isOnError: false,
       errorMessage: "Por favor, insira um nome menor que 40 caracteres!",
+      validateFunction: (p: string) => false,
     },
     {
       description: "urlSite",
       value: "",
       isOnError: false,
       errorMessage: "A URL do site deve respeitar o padrão",
+      validateFunction: (p: string) => false,
     },
   ]);
 

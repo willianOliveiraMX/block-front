@@ -7,6 +7,7 @@ type Props = {
   justifyContentEnd?: boolean;
   justifyContentCenter?: boolean;
   marginTop?: string;
+  margin?: string;
 };
 
 const defaultProps = {
@@ -14,6 +15,7 @@ const defaultProps = {
   justifyContentEnd: false,
   justifyContentCenter: false,
   marginTop: "",
+  margin: "",
 };
 
 const GridWrapper = ({
@@ -22,6 +24,7 @@ const GridWrapper = ({
   justifyContentEnd,
   justifyContentCenter,
   marginTop,
+  margin,
 }: Props): JSX.Element => {
   return (
     <Grid
@@ -29,6 +32,7 @@ const GridWrapper = ({
       justifyContentEnd={justifyContentEnd}
       justifyContentCenter={justifyContentCenter}
       marginTop={marginTop}
+      margin={margin}
     >
       {children}
     </Grid>

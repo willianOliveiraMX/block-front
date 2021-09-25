@@ -9,15 +9,36 @@ import ListItem from "../../components/ListItem";
 import ListContainer from "./index.style";
 import PlusIcon from "../../icons/plusicon.svg";
 import { BasicDialog } from "../../components/BasicDialog";
+import DialogDeleteDomain from "../../components/DialogDeleteDomain";
+
+interface ModalToprops {
+  id?: number;
+  description?: string;
+}
 
 const Domains = (): JSX.Element => {
   const [toggleAddDomainDialog, setToggleAddDomainDialog] = useState(false);
+  const [toggleDeleteDomainDialog, setToggleDeleteDomainDialog] =
+    useState(false);
+  const [listTodialogProps, setListTodialogProps] = useState({
+    id: 0,
+    description: "",
+  });
 
   const { data } = useQuery("domainList", getDomains);
 
   // eslint-disable-next-line @typescript-eslint/no-shadow
   const handleToggleDialog = () => {
     setToggleAddDomainDialog(!toggleAddDomainDialog);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-shadow
+  const handleToggleDeleteDialog = ({
+    id = 0,
+    description = "",
+  }: ModalToprops) => {
+    setListTodialogProps({ id, description });
+    setToggleDeleteDomainDialog(!toggleDeleteDomainDialog);
   };
 
   return (
@@ -38,6 +59,7 @@ const Domains = (): JSX.Element => {
               description={item.domain_name}
               descriptionUrl={item.site_url}
               itemId={item.id}
+              handleDeleteAction={handleToggleDeleteDialog}
             />
           ))}
         <GridWrapper flex justifyContentEnd marginTop="60px">
@@ -65,6 +87,11 @@ const Domains = (): JSX.Element => {
           <FormAddDomain onModal externalAction={handleToggleDialog} />
         }
         dialogTitle="Adicione um novo domínio"
+      />
+      <DialogDeleteDomain
+        toggleDeleteDomainDialog={toggleDeleteDomainDialog}
+        handleToggleDialog={handleToggleDeleteDialog}
+        listTodialogProps={listTodialogProps}
       />
     </div>
   );
