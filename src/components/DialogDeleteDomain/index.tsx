@@ -52,7 +52,6 @@ const DialogDeleteDomain = ({
   );
 
   const handleDeleteDomain = () => {
-    console.log("delete domain", listTodialogProps);
     deleteDomain.mutate(listTodialogProps.id || 0);
     handleDialog();
   };

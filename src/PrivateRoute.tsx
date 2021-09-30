@@ -9,7 +9,7 @@ type Props = {
 
 const PrivateRoute = ({ component: Component, path }: Props): JSX.Element => {
   return (
-    <Route path={path}>
+    <Route path={path} exact>
       {isLogin() ? <Component /> : <Redirect to="/login" />}
     </Route>
   );

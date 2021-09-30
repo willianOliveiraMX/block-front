@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 import LogoIcon from "../../icons/logo.svg";
 import LoginIcon from "../../icons/login.svg";
 import ProfileMenu from "../ProfileMenu";
@@ -18,9 +19,11 @@ interface HeaderInterface {
 const Header = ({ isLoginPage }: HeaderInterface): JSX.Element => {
   const [selectedItem, setSelectedItem] = useState("domain");
   const [openProfileMenu, setOpenProfileMenu] = useState(false);
+  const [redirectLink, setRedirectLink] = useState("");
 
   const handleSelectedItem = (itemDescription: string) => {
     setSelectedItem(itemDescription);
+    setRedirectLink(itemDescription);
   };
 
   const handleOpenProfileMenu = () => {
@@ -36,17 +39,17 @@ const Header = ({ isLoginPage }: HeaderInterface): JSX.Element => {
         {!isLoginPage && (
           <>
             <MenuItem
-              backGroundColor={selectedItem === "domain"}
+              backGroundColor={selectedItem === "/domains"}
               onClick={() => {
-                handleSelectedItem("domain");
+                handleSelectedItem("/domains");
               }}
             >
               Dominios
             </MenuItem>
             <MenuItem
-              backGroundColor={selectedItem === "resources"}
+              backGroundColor={selectedItem === "/resources"}
               onClick={() => {
-                handleSelectedItem("resources");
+                handleSelectedItem("/resources");
               }}
             >
               Recursos
@@ -82,6 +85,7 @@ const Header = ({ isLoginPage }: HeaderInterface): JSX.Element => {
             </MenuItem>
           </>
         )}
+        {!!redirectLink.length && <Redirect to={redirectLink} />}
       </MenuWrapper>
     </HeaderStyled>
   );

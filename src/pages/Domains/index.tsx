@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useQuery } from "react-query";
-import Header from "../../components/Header";
 import CardMessage from "../../components/CardMessage";
 import FormAddDomain from "../../components/FormAddDomain";
 import GridWrapper from "../../components/BasicGrid";
@@ -43,7 +42,6 @@ const Domains = (): JSX.Element => {
 
   return (
     <div>
-      <Header isLoginPage={false} />
       {!data && (
         <CardMessage description="Adicione um domínio para começar um novo projeto." />
       )}

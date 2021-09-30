@@ -41,12 +41,12 @@ const BasicButton = ({
     const everyInputIsValid = inputs.every(
       (input) => input.isOnError === false && input.value.length
     );
-    console.log("inputs ==::>", inputs);
-    console.log("validation here ==::>", everyInputIsValid, validInputOff);
-    if (everyInputIsValid || validInputOff) {
-      handleForm(event);
-      updateInputs([...inputs]);
-    }
+    // if (everyInputIsValid || validInputOff) {
+    //   handleForm(event);
+    //   updateInputs([...inputs]);
+    // }
+
+    handleForm(event);
 
     // const buttonPosition = buttonRef?.current?.getBoundingClientRect();
     // const {
