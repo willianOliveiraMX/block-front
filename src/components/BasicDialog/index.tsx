@@ -1,10 +1,6 @@
 import React from "react";
-import {
-  BackgroundWall,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "./index.style";
+import "./index.css";
+import { DialogHeader, DialogTitle } from "./index.style";
 import CloseIcon from "../../icons/closeIcon.svg";
 
 interface BasicDialogProps {
@@ -23,8 +19,20 @@ export const BasicDialog = ({
   return (
     <>
       {dialogIsOpen && (
-        <BackgroundWall dialogIsOpen={dialogIsOpen}>
-          <DialogContent>
+        <div
+          className="backgroundWall"
+          style={{
+            animationName: dialogIsOpen ? "backgroundWallAnimation" : "",
+          }}
+        >
+          <div
+            className="dialogContent"
+            style={{
+              animationName: dialogIsOpen ? "blurAnimation" : "",
+              backgroundColor: "white",
+              position: "relative",
+            }}
+          >
             <DialogHeader>
               <button
                 type="button"
@@ -40,8 +48,8 @@ export const BasicDialog = ({
             </DialogHeader>
             <DialogTitle>{dialogTitle}</DialogTitle>
             {bodyContent}
-          </DialogContent>
-        </BackgroundWall>
+          </div>
+        </div>
       )}
     </>
   );

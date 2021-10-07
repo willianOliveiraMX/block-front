@@ -17,3 +17,12 @@ export const getResources = async () => {
 };
 
 export default getDomains;
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const getOneResource = async (id: number) => {
+  const response = await fetch(`/external-content/${id}`);
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  return response.json();
+};

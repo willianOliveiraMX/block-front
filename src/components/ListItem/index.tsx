@@ -16,6 +16,7 @@ interface ListItemInterface {
   descriptionUrl: string;
   itemId: number;
   handleDeleteAction: ({ id, description }: ModalToprops) => void;
+  handleEditAction: ({ id, description }: ModalToprops) => void;
 }
 
 const ListItem = ({
@@ -23,13 +24,25 @@ const ListItem = ({
   descriptionUrl,
   itemId,
   handleDeleteAction,
+  handleEditAction,
 }: ListItemInterface): JSX.Element => {
   return (
     <ListWrapper key={itemId}>
       <DecriptionContainer>{description}</DecriptionContainer>
       <DecriptionContainer>{descriptionUrl}</DecriptionContainer>
       <IconsContainer>
-        <img src={Edit} alt="Editar domínio" width="25px" />
+        <button
+          style={{
+            border: "none",
+            backgroundColor: "transparent",
+            cursor: "pointer",
+          }}
+          type="button"
+          onClick={() => handleEditAction({ id: itemId, description })}
+        >
+          <img src={Edit} alt="Editar domínio" width="25px" />
+        </button>
+
         <button
           style={{
             border: "none",

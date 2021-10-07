@@ -84,7 +84,7 @@ const BasicButton = ({
 
   return (
     <StyledButton
-      type="button"
+      type="submit"
       onClick={handleClick}
       ref={buttonRef}
       secondary={secondary}

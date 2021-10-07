@@ -10,17 +10,32 @@ interface BasicInputInterface {
   label: string;
   type: string;
   description: string;
+  inputValue?: string;
 }
+
+const defaultValue = {
+  inputValue: "",
+};
 
 const BasicInput = ({
   label,
   type,
   description,
+  inputValue,
 }: BasicInputInterface): JSX.Element => {
   const [inputFocus, setInputFocus] = useState(false);
-  const [inputInternalValue, setInputInternalValue] = useState("");
+  const [inputInternalValue, setInputInternalValue] = useState(
+    inputValue || ""
+  );
   const [errorMessage, setErrorMessage] = useState("");
   const value = useContext(FormContainerContext);
+
+  useEffect(() => {
+    setInputInternalValue(inputValue || "");
+    if (inputValue) {
+      setInputFocus(true);
+    }
+  }, [inputValue]);
 
   const validateFields = () => {
     const { inputs = [] } = value;
@@ -107,26 +122,26 @@ const BasicInput = ({
     setInputFocus(true);
   };
 
-  const handleOnBlur = () => {
-    if (!inputInternalValue.length) {
-      setInputFocus(false);
-    }
+  // const handleOnBlur = () => {
+  //   if (!inputInternalValue.length) {
+  //     setInputFocus(false);
+  //   }
 
-    const { inputs = [] } = value;
-    if (!inputs.length) return;
+  //   const { inputs = [] } = value;
+  //   if (!inputs.length) return;
 
-    const currentInput = inputs.find(
-      (input) => input.description === description
-    );
+  //   const currentInput = inputs.find(
+  //     (input) => input.description === description
+  //   );
 
-    if (!currentInput) {
-      throw new Error(
-        `You must have to create a object for ${description} input`
-      );
-    }
+  //   if (!currentInput) {
+  //     throw new Error(
+  //       `You must have to create a object for ${description} input`
+  //     );
+  //   }
 
-    validateFields();
-  };
+  //   validateFields();
+  // };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.currentTarget.value;
@@ -138,7 +153,7 @@ const BasicInput = ({
       <input
         id="inputId"
         onFocus={handleOnFocus}
-        onBlur={handleOnBlur}
+        onBlur={() => {}}
         value={inputInternalValue}
         onChange={handleInputChange}
         type={type}
@@ -148,5 +163,7 @@ const BasicInput = ({
     </BasicInputWrapper>
   );
 };
+
+BasicInput.defaultProps = defaultValue;
 
 export default BasicInput;
