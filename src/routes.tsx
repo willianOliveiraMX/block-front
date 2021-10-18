@@ -5,6 +5,7 @@ import Domains from "./pages/Domains";
 import Resources from "./pages/Resources";
 import PrivateRoute from "./PrivateRoute";
 import Header from "./components/Header";
+import Platform from "./pages/Platform";
 
 const Routes = (): JSX.Element => {
   return (
@@ -16,6 +17,10 @@ const Routes = (): JSX.Element => {
         </Route>
         <PrivateRoute component={() => <Domains />} path="/domains" />
         <PrivateRoute component={() => <Resources />} path="/resources" />
+        <PrivateRoute
+          component={() => <Platform />}
+          path="/platform/:domainId"
+        />
         <PrivateRoute component={() => <Domains />} path="/" />
       </Switch>
     </Router>

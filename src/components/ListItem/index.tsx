@@ -1,6 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Edit from "../../icons/edit.svg";
 import Delete from "../../icons/delete.svg";
+import enterTheDomain from "../../icons/enterTheDomain.svg";
 import {
   ListWrapper,
   DecriptionContainer,
@@ -17,6 +19,7 @@ interface ListItemInterface {
   itemId: number;
   handleDeleteAction: ({ id, description }: ModalToprops) => void;
   handleEditAction: ({ id, description }: ModalToprops) => void;
+  linkTo?: string | null;
 }
 
 const ListItem = ({
@@ -25,10 +28,22 @@ const ListItem = ({
   itemId,
   handleDeleteAction,
   handleEditAction,
+  linkTo,
 }: ListItemInterface): JSX.Element => {
   return (
     <ListWrapper key={itemId}>
-      <DecriptionContainer>{description}</DecriptionContainer>
+      {linkTo && (
+        <Link to={linkTo || ""} style={{ display: "flex" }}>
+          <img
+            src={enterTheDomain}
+            alt="follow link"
+            width="18px"
+            style={{ marginRight: "12px" }}
+          />
+          <DecriptionContainer>{description}</DecriptionContainer>
+        </Link>
+      )}
+      {!linkTo && <DecriptionContainer>{description}</DecriptionContainer>}
       <DecriptionContainer>{descriptionUrl}</DecriptionContainer>
       <IconsContainer>
         <button
@@ -58,5 +73,7 @@ const ListItem = ({
     </ListWrapper>
   );
 };
+
+ListItem.defaultProps = { linkTo: null };
 
 export default ListItem;

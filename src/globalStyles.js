@@ -7,6 +7,11 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     font-family: Open-Sans, Lato, Sans-Serif;
   }
+  a {
+    color: #350625;
+    border: none;
+    text-decoration: none;
+  }
 `;
 
 export default GlobalStyle;

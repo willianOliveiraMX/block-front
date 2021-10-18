@@ -59,6 +59,7 @@ const Domains = (): JSX.Element => {
               itemId={item.id}
               handleDeleteAction={handleToggleDeleteDialog}
               handleEditAction={() => {}}
+              linkTo={`/platform/${item.id}`}
             />
           ))}
         <GridWrapper flex justifyContentEnd marginTop="60px">
