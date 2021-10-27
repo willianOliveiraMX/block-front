@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
+import Draggable from "react-draggable";
 import {
   SideBarMenu,
   ButtonMenu,
@@ -23,6 +26,7 @@ import formIcon from "./icons/componentsIcons/formIcon.svg";
 import dropdownIcon from "./icons/componentsIcons/dropdownIcon.svg";
 import selectIcon from "./icons/componentsIcons/selectIcon.svg";
 import radioboxIcon from "./icons/componentsIcons/radioboxIcon.svg";
+import { getPagesByDomains } from "../../services/queries";
 
 const componentsList: JSX.Element[] = [
   <img src={paragraphIcon} alt="paragraph item here" />,
@@ -45,7 +49,12 @@ const componentsList: JSX.Element[] = [
   </div>,
 ];
 
-const SideMenu = (): JSX.Element => {
+interface SideMenuProps {
+  setPageId: Dispatch<SetStateAction<string>>;
+}
+
+const SideMenu = ({ setPageId }: SideMenuProps): JSX.Element => {
+  const { domainId = "" }: { domainId: string } = useParams();
   const [openSideMenu, setOpenSideMenu] = useState(false);
   const [openPagesSideMenu, setOpenPagesSideMenu] = useState(false);
   const [menuItens, setMenuItens] = useState([<span />]);
@@ -61,6 +70,17 @@ const SideMenu = (): JSX.Element => {
       setOpenSideMenu(false);
     }
   };
+
+  const { data = [] } = useQuery("pagesDomains", async () => {
+    const result = await getPagesByDomains(domainId);
+    return result;
+  });
+
+  useEffect(() => {
+    if (data.length) {
+      setPageId(data[0]?.id);
+    }
+  }, [data, setPageId]);
 
   return (
     <SideBarMenu>
@@ -80,7 +100,7 @@ const SideMenu = (): JSX.Element => {
         {menuItens.map((item) => item)}
       </WrapperMenuItens>
       <WrapperMenuPages openSideMenu={openPagesSideMenu}>
-        {openPagesSideMenu && <PagesList />}
+        {openPagesSideMenu && <PagesList setPageId={setPageId} list={data} />}
       </WrapperMenuPages>
     </SideBarMenu>
   );

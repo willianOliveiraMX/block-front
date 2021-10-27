@@ -19,6 +19,7 @@ const PageItem = styled.div`
 
 export const InputField = styled.input`
   margin: 8px 12px;
+  padding: 2px 4px;
   background-color: transparent;
   border-top: transparent;
   border-left: transparent;

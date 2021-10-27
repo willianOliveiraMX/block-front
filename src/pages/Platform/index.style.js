@@ -9,6 +9,7 @@ const BackgroundPlatform = styled.div`
 
 export const SideBarMenu = styled.div`
   position: relative;
+  z-index: 1000;
   display: flex;
   justify-content: flex-start;
   flex-flow: column;

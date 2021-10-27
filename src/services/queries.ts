@@ -35,3 +35,12 @@ export const getPagesByDomains = async (id: string) => {
   }
   return response.json();
 };
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const getPageById = async (id: string) => {
+  const response = await fetch(`/pages/${id}`);
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  return response.json();
+};
