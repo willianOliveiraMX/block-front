@@ -67,7 +67,7 @@ export const PageBreadcrumbs = styled.button`
 `;
 
 export const DragCard = styled.div`
-  width: 125px;
+  width: 80px;
   height: 125px;
   background-color: rebeccapurple;
   border: 1px solid red;
@@ -79,6 +79,8 @@ export const DragCard = styled.div`
 `;
 
 export const GridContainer = styled.div`
+  display: flex;
+  justify-content: center;
   width: 238px;
   height: 320px;
   margin-top: 8px;

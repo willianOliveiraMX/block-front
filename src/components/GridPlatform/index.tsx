@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useQuery } from "react-query";
-import Draggable from "react-draggable";
 import { getPageById } from "../../services/queries";
 import GridPlatformContainer, {
   InternalContainer,
@@ -8,13 +7,12 @@ import GridPlatformContainer, {
   PageName,
   ResponsiveIcons,
   PageBreadcrumbs,
-  DragCard,
-  GridContainer,
 } from "./index.style";
 import smartPhone from "./icons/smartPhone.svg";
 import tablet from "./icons/tablet.svg";
 import desktop from "./icons/desktop.svg";
 import edit from "./icons/edit.svg";
+import DragContainer from "./DragContainer";
 
 interface GridPlatformProps {
   pageId: string;
@@ -22,6 +20,18 @@ interface GridPlatformProps {
 
 const GridPlatform = ({ pageId }: GridPlatformProps): JSX.Element => {
   const [routeFullName, setRouteFullName] = useState("");
+  const [refsList, setRefsList] = useState([
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+  ]);
+  const [hasContentList, setHasContentList] = useState([
+    false,
+    false,
+    true,
+    false,
+  ]);
   const { data, refetch, remove } = useQuery("getPageById", async () => {
     const result = await getPageById(pageId || "");
     return result;
@@ -33,7 +43,6 @@ const GridPlatform = ({ pageId }: GridPlatformProps): JSX.Element => {
       remove();
     };
   }, [pageId, refetch, remove]);
-  console.log(data);
 
   useEffect(() => {
     if (!data) return;
@@ -73,16 +82,38 @@ const GridPlatform = ({ pageId }: GridPlatformProps): JSX.Element => {
               </div>
             </InternalGridHeader>
             <InternalContainer>
-              <GridContainer>
-                <Draggable bounds="parent">
-                  <DragCard>
-                    <h1>aqui arrasta</h1>
-                  </DragCard>
-                </Draggable>
-              </GridContainer>
-              <GridContainer />
-              <GridContainer />
-              <GridContainer />
+              <DragContainer
+                contentList={hasContentList}
+                setHasContentList={setHasContentList}
+                hasContent={hasContentList[0]}
+                listRef={refsList}
+                setRefsList={setRefsList}
+                id={0}
+              />
+              <DragContainer
+                contentList={hasContentList}
+                setHasContentList={setHasContentList}
+                hasContent={hasContentList[1]}
+                listRef={refsList}
+                setRefsList={setRefsList}
+                id={1}
+              />
+              <DragContainer
+                contentList={hasContentList}
+                setHasContentList={setHasContentList}
+                hasContent={hasContentList[2]}
+                listRef={refsList}
+                setRefsList={setRefsList}
+                id={2}
+              />
+              <DragContainer
+                contentList={hasContentList}
+                setHasContentList={setHasContentList}
+                hasContent={hasContentList[3]}
+                listRef={refsList}
+                setRefsList={setRefsList}
+                id={3}
+              />
             </InternalContainer>
           </GridPlatformContainer>
         </>
