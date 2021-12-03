@@ -7,12 +7,63 @@ import GridPlatformContainer, {
   PageName,
   ResponsiveIcons,
   PageBreadcrumbs,
+  GridDragAnDropContainer,
+  GridDragAndDropLine,
 } from "./index.style";
 import smartPhone from "./icons/smartPhone.svg";
 import tablet from "./icons/tablet.svg";
 import desktop from "./icons/desktop.svg";
 import edit from "./icons/edit.svg";
 import DragContainer from "./DragContainer";
+import CardGridContainer from "../../types";
+import GridManager from "../GridManager";
+import {
+  case1,
+  case2,
+  case3,
+  case4,
+  case5,
+  case6,
+  case7,
+  case8,
+  case9,
+} from "./gridOptions";
+import DocumentShadow from "../../services/documentTree";
+
+const doc = DocumentShadow({ name: "header", value: "div", childrens: [] });
+
+doc.setParentNode({ name: "body", value: "div", childrens: [] });
+const idHeader = doc.tree.root.find(
+  (element: { name: string }) => element.name === "header"
+);
+
+const idBody = doc.tree.root.find(
+  (element: { name: string }) => element.name === "body"
+);
+
+doc.setChildren(idHeader?.id, {
+  name: "menu",
+  value: "div",
+  childrens: [],
+});
+
+doc.setChildren(idHeader.id, {
+  name: "button",
+  value: "div",
+  childrens: [],
+});
+console.log(doc);
+// doc.setChildren(idBody.id, {
+//   name: "form",
+//   value: "div",
+//   childrens: [],
+// });
+
+// doc.editNode(idHeader.id, { key: "value", newValue: "section" });
+// doc.deleteNode(idHeader.id);
+
+// doc.deleteNode(idMenu.id);
+// doc.deleteNode(doc.tree.root[0].id);
 
 interface GridPlatformProps {
   pageId: string;
@@ -32,6 +83,9 @@ const GridPlatform = ({ pageId }: GridPlatformProps): JSX.Element => {
     true,
     false,
   ]);
+  const [cardGridContainer, setCardGridContainer] = useState<
+    CardGridContainer[][] | []
+  >([]);
   const { data, refetch, remove } = useQuery("getPageById", async () => {
     const result = await getPageById(pageId || "");
     return result;
@@ -53,6 +107,42 @@ const GridPlatform = ({ pageId }: GridPlatformProps): JSX.Element => {
     const routeNameFull = `${siteUrl}/${routeName.replaceAll(" ", "_")}`;
     setRouteFullName(routeNameFull.toLowerCase());
   }, [data]);
+
+  // const b = useRef<HTMLDivElement>(null);
+
+  const handleDefaultGridLine = (grindId: number) => {
+    switch (grindId) {
+      case 1:
+        setCardGridContainer([case1]);
+        break;
+      case 2:
+        setCardGridContainer([case2]);
+        break;
+      case 3:
+        setCardGridContainer([case3]);
+        break;
+      case 4:
+        setCardGridContainer([case4]);
+        break;
+      case 5:
+        setCardGridContainer([case5]);
+        break;
+      case 6:
+        setCardGridContainer(case6);
+        break;
+      case 7:
+        setCardGridContainer(case7);
+        break;
+      case 8:
+        setCardGridContainer(case8);
+        break;
+      case 9:
+        setCardGridContainer(case9);
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <>
@@ -82,38 +172,42 @@ const GridPlatform = ({ pageId }: GridPlatformProps): JSX.Element => {
               </div>
             </InternalGridHeader>
             <InternalContainer>
-              <DragContainer
-                contentList={hasContentList}
-                setHasContentList={setHasContentList}
-                hasContent={hasContentList[0]}
-                listRef={refsList}
-                setRefsList={setRefsList}
-                id={0}
-              />
-              <DragContainer
-                contentList={hasContentList}
-                setHasContentList={setHasContentList}
-                hasContent={hasContentList[1]}
-                listRef={refsList}
-                setRefsList={setRefsList}
-                id={1}
-              />
-              <DragContainer
-                contentList={hasContentList}
-                setHasContentList={setHasContentList}
-                hasContent={hasContentList[2]}
-                listRef={refsList}
-                setRefsList={setRefsList}
-                id={2}
-              />
-              <DragContainer
-                contentList={hasContentList}
-                setHasContentList={setHasContentList}
-                hasContent={hasContentList[3]}
-                listRef={refsList}
-                setRefsList={setRefsList}
-                id={3}
-              />
+              <GridDragAnDropContainer>
+                {!!cardGridContainer.length &&
+                  cardGridContainer.map((item = []) => {
+                    return (
+                      <GridDragAndDropLine
+                        display={item[0].containerLineStyle.display}
+                        justifyContent={
+                          item[0].containerLineStyle.justifyContent
+                        }
+                      >
+                        {item.map((elementItem, elementItemIdex) => {
+                          return (
+                            <>
+                              <DragContainer
+                                contentList={[false, false]}
+                                setHasContentList={() => {}}
+                                hasContent={!!elementItem.components}
+                                listRef={elementItem.gridCardRef}
+                                setRefsList={() => {}}
+                                id={elementItemIdex}
+                                containerLineType={
+                                  elementItem.containerLineType
+                                }
+                                dragContainerStyle={elementItem.cardStyle}
+                                cardGridContainer={cardGridContainer}
+                                setCardGridContainer={setCardGridContainer}
+                                cardItem={elementItem}
+                              />
+                            </>
+                          );
+                        })}
+                      </GridDragAndDropLine>
+                    );
+                  })}
+              </GridDragAnDropContainer>
+              <GridManager handleDefaultGridLine={handleDefaultGridLine} />
             </InternalContainer>
           </GridPlatformContainer>
         </>

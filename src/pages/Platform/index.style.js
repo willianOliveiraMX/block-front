@@ -3,7 +3,8 @@ import styled from "styled-components";
 const BackgroundPlatform = styled.div`
   position: absolute;
   width: 100%;
-  height: calc(100% - 72px);
+  top: 0;
+  height: 100%;
   background-color: #fddaf1;
 `;
 

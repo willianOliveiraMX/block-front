@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Draggable from "react-draggable";
 import {
   SideBarMenu,
@@ -26,6 +26,7 @@ import formIcon from "./icons/componentsIcons/formIcon.svg";
 import dropdownIcon from "./icons/componentsIcons/dropdownIcon.svg";
 import selectIcon from "./icons/componentsIcons/selectIcon.svg";
 import radioboxIcon from "./icons/componentsIcons/radioboxIcon.svg";
+import backToDomain from "./icons/componentsIcons/backToDomainIcon.svg";
 import { getPagesByDomains } from "../../services/queries";
 
 const componentsList: JSX.Element[] = [
@@ -51,9 +52,13 @@ const componentsList: JSX.Element[] = [
 
 interface SideMenuProps {
   setPageId: Dispatch<SetStateAction<string>>;
+  handleHeaderSwich: (p: boolean) => void;
 }
 
-const SideMenu = ({ setPageId }: SideMenuProps): JSX.Element => {
+const SideMenu = ({
+  setPageId,
+  handleHeaderSwich,
+}: SideMenuProps): JSX.Element => {
   const { domainId = "" }: { domainId: string } = useParams();
   const [openSideMenu, setOpenSideMenu] = useState(false);
   const [openPagesSideMenu, setOpenPagesSideMenu] = useState(false);
@@ -84,6 +89,16 @@ const SideMenu = ({ setPageId }: SideMenuProps): JSX.Element => {
 
   return (
     <SideBarMenu>
+      <ButtonMenu
+        onClick={() => {
+          handleHeaderSwich(false);
+        }}
+        value="components"
+      >
+        <Link to="/domains">
+          <img src={backToDomain} alt="menu icon" />
+        </Link>
+      </ButtonMenu>
       <ButtonMenu
         onClick={() => handleOpenSideMenu("components")}
         value="components"

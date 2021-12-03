@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import LogoIcon from "../../icons/logo.svg";
 import LoginIcon from "../../icons/login.svg";
@@ -14,9 +14,13 @@ import {
 
 interface HeaderInterface {
   isLoginPage: boolean;
+  toggleHeader: boolean;
 }
 
-const Header = ({ isLoginPage }: HeaderInterface): JSX.Element => {
+const Header = ({
+  isLoginPage,
+  toggleHeader,
+}: HeaderInterface): JSX.Element => {
   const [selectedItem, setSelectedItem] = useState("domain");
   const [openProfileMenu, setOpenProfileMenu] = useState(false);
   const [redirectLink, setRedirectLink] = useState("");
@@ -31,7 +35,7 @@ const Header = ({ isLoginPage }: HeaderInterface): JSX.Element => {
   };
 
   return (
-    <HeaderStyled>
+    <HeaderStyled toggle={toggleHeader}>
       <div>
         <LogoImage src={LogoIcon} alt="logo" />
       </div>

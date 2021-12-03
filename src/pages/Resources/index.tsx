@@ -41,7 +41,7 @@ const Resources = (): JSX.Element => {
   };
 
   return (
-    <div>
+    <div style={{ marginTop: "110px" }}>
       <ListContainer>
         {data &&
           data.map((item: any) => (

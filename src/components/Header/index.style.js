@@ -1,14 +1,24 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const LogoImage = styled.img`
   width: 110px;
 `;
 
 export const HeaderStyled = styled.header`
+  width: 97vw;
+  top: 0px;
+  background-color: white;
+  position: fixed;
   padding: 20px 20px 5px;
   border-bottom: 1px solid #e052b0;
   display: flex;
   justify-content: space-between;
+  transition: all 150ms ease-in;
+  ${({ toggle }) =>
+    toggle &&
+    css`
+      top: -75px;
+    `}
 `;
 
 export const LoginIconStyled = styled.img`

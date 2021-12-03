@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect, RefObject } from "react";
 import DragCardContainer from "./DragCard";
-import { GridContainer } from "./index.style";
+import { GridContainer, GridClickArea } from "./index.style";
 import getIfAnyElementIsOnArea from "./CheckAreaElement";
+import CardGridContainer, { CardStyleProps } from "../../types";
 
 interface DragData {
   deltaX: number;
@@ -25,6 +26,11 @@ interface DragProps {
   id: number;
   contentList: boolean[];
   setHasContentList: (p: any) => void;
+  containerLineType: number;
+  dragContainerStyle: CardStyleProps;
+  cardGridContainer: CardGridContainer[][];
+  setCardGridContainer: (p: any) => void;
+  cardItem: CardGridContainer;
 }
 
 const DragContainer = ({
@@ -34,6 +40,11 @@ const DragContainer = ({
   contentList,
   setHasContentList,
   id,
+  containerLineType,
+  dragContainerStyle,
+  cardGridContainer,
+  setCardGridContainer,
+  cardItem,
 }: DragProps): JSX.Element => {
   const [containerPosition, setContainerPostition] = useState<Position>({
     x: 0,
@@ -80,14 +91,44 @@ const DragContainer = ({
     }
   };
 
+  const handleContainerchanges = () => {
+    // console.log(cardGridContainer, cardItem);
+    const newCardGridContainer = cardGridContainer.map((line) => {
+      return line.map((item) => {
+        if (item.id === cardItem.id) {
+          return {
+            ...item,
+            isSelected: true,
+          };
+        }
+        return {
+          ...item,
+          isSelected: false,
+        };
+      });
+    });
+    // console.log(newCardGridContainer);
+    setCardGridContainer([...newCardGridContainer]);
+  };
+
   return (
-    <GridContainer ref={listRef[id]}>
-      {hasContent && (
-        <DragCardContainer
-          handleOnStopDrag={handleOnStopDrag}
-          containerPosition={containerPosition}
-        />
-      )}
+    <GridContainer
+      ref={listRef[id]}
+      display={dragContainerStyle.display}
+      width={dragContainerStyle.width}
+      height={dragContainerStyle.height}
+      justifyContent={dragContainerStyle.justifyContent}
+      isSelectedContainer={cardItem.isSelected}
+      style={{ ...(cardItem.isSelected && { border: "3px solid #ffb4e5" }) }}
+    >
+      <GridClickArea onClick={() => handleContainerchanges()}>
+        {/* {hasContent && (
+          <DragCardContainer
+            handleOnStopDrag={handleOnStopDrag}
+            containerPosition={containerPosition}
+          />
+        )} */}
+      </GridClickArea>
     </GridContainer>
   );
 };

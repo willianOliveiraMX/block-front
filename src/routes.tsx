@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Domains from "./pages/Domains";
@@ -8,9 +8,14 @@ import Header from "./components/Header";
 import Platform from "./pages/Platform";
 
 const Routes = (): JSX.Element => {
+  const [toggleHeaderState, setToggleHeaderState] = useState(false);
+  const handleHeaderSwich = (state: boolean) => {
+    setToggleHeaderState(state);
+  };
+
   return (
     <Router>
-      <Header isLoginPage={false} />
+      <Header isLoginPage={false} toggleHeader={toggleHeaderState} />
       <Switch>
         <Route path="/login">
           <Login />
@@ -18,7 +23,7 @@ const Routes = (): JSX.Element => {
         <PrivateRoute component={() => <Domains />} path="/domains" />
         <PrivateRoute component={() => <Resources />} path="/resources" />
         <PrivateRoute
-          component={() => <Platform />}
+          component={() => <Platform handleHeaderSwich={handleHeaderSwich} />}
           path="/platform/:domainId"
         />
         <PrivateRoute component={() => <Domains />} path="/" />

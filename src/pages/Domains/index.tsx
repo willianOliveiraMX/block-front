@@ -41,7 +41,7 @@ const Domains = (): JSX.Element => {
   };
 
   return (
-    <div>
+    <div style={{ marginTop: "110px" }}>
       {!data && (
         <CardMessage description="Adicione um domínio para começar um novo projeto." />
       )}
