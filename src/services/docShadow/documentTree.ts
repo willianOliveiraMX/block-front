@@ -1,18 +1,12 @@
-interface Children {
+export interface Component {
   id?: string | undefined;
   name: string;
   value: string;
+  htmlElementName: string;
   childrens: Component[];
 }
 
-interface Component {
-  id?: string | undefined;
-  name: string;
-  value: string;
-  childrens: Children[];
-}
-
-interface Tree {
+export interface Tree {
   root: Component[];
 }
 
@@ -20,27 +14,32 @@ const generateUniqueId = () => {
   return `_${Math.random().toString(36).substr(2, 9)}`;
 };
 
-interface NodeStatement {
+export interface NodeStatement {
   setParentNode: (p: Component) => any;
   setChildren: (
     parentId: string | undefined,
     children: Component,
-    nestedTree: undefined | Component[]
+    nestedTree?: undefined | Component[]
   ) => any;
   editNode: (
     parentId: string,
     newData: { key: keyof Component; newValue: any },
-    nestedTree: undefined | Component[]
+    nestedTree?: undefined | Component[]
   ) => any;
-  deleteNode: (parentId: string, nestedTree: undefined | Component[]) => any;
+  deleteNode: (parentId: string, nestedTree?: undefined | Component[]) => any;
   tree: Tree;
 }
 
-function DocumentShadow(value: Component): any {
-  const tree = <Tree>{ root: [] };
+function DocumentShadow(
+  value: Component,
+  tree: Tree,
+  setNewTre: (p: Tree) => any
+): any {
+  // const tree = <Tree>{ root: [] };
 
   const setParentNode = (parent: Component) => {
     tree.root.push({ ...parent, id: generateUniqueId() });
+    setNewTre({ ...tree });
   };
 
   setParentNode(value);
@@ -54,6 +53,7 @@ function DocumentShadow(value: Component): any {
       nestedTree.forEach((item) => {
         if (item.id === parentId) {
           item.childrens.push({ ...children, id: generateUniqueId() });
+          setNewTre({ ...tree });
         } else {
           setChildren(parentId, children, item.childrens);
         }
@@ -63,6 +63,7 @@ function DocumentShadow(value: Component): any {
     tree.root.forEach((item) => {
       if (item.id === parentId) {
         item.childrens.push({ ...children, id: generateUniqueId() });
+        setNewTre({ ...tree });
       } else {
         setChildren(parentId, children, item.childrens);
       }
@@ -80,6 +81,7 @@ function DocumentShadow(value: Component): any {
         if (item.id === parentId) {
           // eslint-disable-next-line no-param-reassign
           item[newData.key] = newData.newValue;
+          setNewTre({ ...tree });
         } else {
           editNode(parentId, newData, item.childrens);
         }
@@ -90,6 +92,7 @@ function DocumentShadow(value: Component): any {
       if (item.id === parentId) {
         // eslint-disable-next-line no-param-reassign
         item[newData.key] = newData.newValue;
+        setNewTre({ ...tree });
       } else {
         editNode(parentId, newData, item.childrens);
       }
@@ -107,6 +110,7 @@ function DocumentShadow(value: Component): any {
       );
       if (isNestedTreIndex >= 0) {
         tree.root.splice(isNestedTreIndex, 1);
+        setNewTre({ ...tree });
         return { ...tree };
       }
 
@@ -117,6 +121,7 @@ function DocumentShadow(value: Component): any {
 
         if (isChildrenToDeleteIndex >= 0) {
           nestedItem.childrens.splice(isChildrenToDeleteIndex, 1);
+          setNewTre({ ...tree });
           return { ...tree };
         }
         deleteNode(parentId, nestedItem.childrens);
@@ -131,6 +136,7 @@ function DocumentShadow(value: Component): any {
 
     if (isRootIndex >= 0) {
       tree.root.splice(isRootIndex, 1);
+      setNewTre({ ...tree });
       return { ...tree };
     }
 
@@ -141,6 +147,7 @@ function DocumentShadow(value: Component): any {
 
       if (isChildrenToDeleteIndex >= 0) {
         item.childrens.splice(isChildrenToDeleteIndex, 1);
+        setNewTre({ ...tree });
         return { ...tree };
       }
       deleteNode(parentId, item.childrens);
@@ -148,7 +155,7 @@ function DocumentShadow(value: Component): any {
       return { ...tree };
     });
 
-    tree.root.forEach(() => {});
+    // tree.root.forEach(() => {});
 
     return { ...tree };
   };

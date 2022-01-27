@@ -28,31 +28,33 @@ import {
   case8,
   case9,
 } from "./gridOptions";
-import DocumentShadow from "../../services/documentTree";
+import DocumentShadow, { Tree } from "../../services/docShadow/documentTree";
+import ItemComponent from "./itemComponent";
+import useDocShadowHook from "../../services/docShadow/docShadowHook";
 
-const doc = DocumentShadow({ name: "header", value: "div", childrens: [] });
+// const doc = DocumentShadow({ name: "header", value: "div", childrens: [] });
 
-doc.setParentNode({ name: "body", value: "div", childrens: [] });
-const idHeader = doc.tree.root.find(
-  (element: { name: string }) => element.name === "header"
-);
+// doc.setParentNode({ name: "body", value: "div", childrens: [] });
+// const idHeader = doc.tree.root.find(
+//   (element: { name: string }) => element.name === "header"
+// );
 
-const idBody = doc.tree.root.find(
-  (element: { name: string }) => element.name === "body"
-);
+// const idBody = doc.tree.root.find(
+//   (element: { name: string }) => element.name === "body"
+// );
 
-doc.setChildren(idHeader?.id, {
-  name: "menu",
-  value: "div",
-  childrens: [],
-});
+// doc.setChildren(idHeader?.id, {
+//   name: "menu",
+//   value: "div",
+//   childrens: [],
+// });
 
-doc.setChildren(idHeader.id, {
-  name: "button",
-  value: "div",
-  childrens: [],
-});
-console.log(doc);
+// doc.setChildren(idHeader.id, {
+//   name: "button",
+//   value: "div",
+//   childrens: [],
+// });
+// console.log(doc);
 // doc.setChildren(idBody.id, {
 //   name: "form",
 //   value: "div",
@@ -83,13 +85,29 @@ const GridPlatform = ({ pageId }: GridPlatformProps): JSX.Element => {
     true,
     false,
   ]);
-  const [cardGridContainer, setCardGridContainer] = useState<
-    CardGridContainer[][] | []
-  >([]);
+  // const [cardGridContainer, setCardGridContainer] = useState<
+  //   CardGridContainer[][] | []
+  // >([]);
+  // const [cardGridContainer, setCardGridContainer] = useState<
+  //   Tree | undefined
+  // >();
+  const [cardGridContainer, setNewChild, deleteChildren] = useDocShadowHook();
   const { data, refetch, remove } = useQuery("getPageById", async () => {
     const result = await getPageById(pageId || "");
     return result;
   });
+  // console.log(cardGridContainer);
+  // const docS = DocumentShadow({
+  //   name: "header",
+  //   value: "section",
+  //   childrens: [],
+  // });
+  console.count("reload");
+  // docS.setParentNode({
+  //   name: "body",
+  //   value: "div",
+  //   childrens: [],
+  // });
 
   useEffect(() => {
     refetch();
@@ -108,40 +126,14 @@ const GridPlatform = ({ pageId }: GridPlatformProps): JSX.Element => {
     setRouteFullName(routeNameFull.toLowerCase());
   }, [data]);
 
-  // const b = useRef<HTMLDivElement>(null);
+  const removeChildren = (gridId: string | undefined) => {
+    if (!gridId) return;
+    deleteChildren(gridId);
+  };
 
-  const handleDefaultGridLine = (grindId: number) => {
-    switch (grindId) {
-      case 1:
-        setCardGridContainer([case1]);
-        break;
-      case 2:
-        setCardGridContainer([case2]);
-        break;
-      case 3:
-        setCardGridContainer([case3]);
-        break;
-      case 4:
-        setCardGridContainer([case4]);
-        break;
-      case 5:
-        setCardGridContainer([case5]);
-        break;
-      case 6:
-        setCardGridContainer(case6);
-        break;
-      case 7:
-        setCardGridContainer(case7);
-        break;
-      case 8:
-        setCardGridContainer(case8);
-        break;
-      case 9:
-        setCardGridContainer(case9);
-        break;
-      default:
-        break;
-    }
+  const addNewChildren = (gridId: string | undefined) => {
+    if (!gridId) return;
+    setNewChild(gridId);
   };
 
   return (
@@ -173,7 +165,15 @@ const GridPlatform = ({ pageId }: GridPlatformProps): JSX.Element => {
             </InternalGridHeader>
             <InternalContainer>
               <GridDragAnDropContainer>
-                {!!cardGridContainer.length &&
+                {cardGridContainer?.root &&
+                  cardGridContainer?.root.map((item) => (
+                    <ItemComponent
+                      item={item}
+                      addChildren={addNewChildren}
+                      removeChildren={removeChildren}
+                    />
+                  ))}
+                {/* {!!cardGridContainer.length &&
                   cardGridContainer.map((item = []) => {
                     return (
                       <GridDragAndDropLine
@@ -205,9 +205,9 @@ const GridPlatform = ({ pageId }: GridPlatformProps): JSX.Element => {
                         })}
                       </GridDragAndDropLine>
                     );
-                  })}
+                  })} */}
               </GridDragAnDropContainer>
-              <GridManager handleDefaultGridLine={handleDefaultGridLine} />
+              {/* <GridManager handleDefaultGridLine={handleDefaultGridLine} /> */}
             </InternalContainer>
           </GridPlatformContainer>
         </>
